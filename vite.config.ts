@@ -1,1 +1,1 @@
-import { defineConfig } from "vite"; import react from "@vitejs/plugin-react"; export default defineConfig({ plugins: [react()], resolve: { alias: { "@": "./src" } }, css: { postcss: "postcss.config.cjs" } })
+import { defineConfig } from "vite"; import react from "@vitejs/plugin-react"; export default defineConfig({ plugins: [react()], resolve: { alias: { "@": "./src" } }, base: "/data-science-lab/", css: { postcss: "postcss.config.cjs" } })
