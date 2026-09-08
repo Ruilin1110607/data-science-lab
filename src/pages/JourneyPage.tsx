@@ -1,1 +1,91 @@
-@react-component JourneyPage import React from "react"; const years = [ { year: 2026, title: "Year 1 · Foundations", status: "In Progress", items: ["C Programming", "Python", "Calculus", "Linear Algebra", "Statistics", "Data Visualization"], current: true }, { year: 2027, title: "Year 2 · Modeling", status: "Upcoming", items: ["Probability", "Machine Learning", "Statistical Learning", "Kaggle", "Data Mining"] }, { year: 2028, title: "Year 3 · Research", status: "Upcoming", items: ["Deep Learning", "Research Projects", "Academic Writing", "Competition", "Research Internship"] }, { year: 2029, title: "Year 4 · Graduate Study", status: "Future", items: [] }]; export const JourneyPage: React.FC = () => { return ( <section className="py-12 bg-gray-900"> <div className="max-w-[1600px] mx-auto px-6"> <div className="text-center mb-12"> <h2 className="text-5xl lg:text-6xl font-bold tracking-tight mb-4">My Data Science Journey</h2> <p className="text-gray-400 text-lg">Learning in public. Building in progress.</p> </div> <div className="relative"> <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gray-700" /> {years.map((year, idx) => { const isCurrent = year.current; const progress = (idx / (years.length - 1)) * 100; const prevYear = years[idx - 1]; const nextYear = years[idx + 1]; return ( <div key={year.year} className="flex items-center gap-4 mb-6" style={{ flexDirection: "row-reverse", justifyContent: "space-between" }}> {idx > 0 && ( <div className={`absolute left-1/2 right-1/2 h-px bg-gray-700 transition-colors ${isCurrent ? "bg-green-500" : "inherit"}`} style={{ width: isCurrent ? "auto" : "100%" }} /> )} <div className={`relative flex-1 min-w-0 ${isCurrent ? "text-green-400" : "text-gray-300"} flex flex-col items-center ${!isCurrent && "hover:text-green-400 transition-colors"}`}> <div className={`w-14 h-14 rounded-full bg-gray-800 border ${isCurrent ? "border-green-500" : "border-transparent"} flex items-center justify-center text-sm font-medium mb-3}`>{year.year}</div> <h4 className="font-medium text-center text-left">{year.title}</h4> <p className="text-xs text-gray-500 text-center mt-1">{year.status}</p> {year.items.length > 0 && ( <div className="mt-3 text-left w-full"> {year.items.map((item, i) => ( <span key={item} className="block text-xs text-gray-500 mb-0.5">• {item}</span> )) } </div> )} </div> {idx < years.length - 1 && ( <div className={`absolute right-${isCurrent ? "0" : "2"} top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-${isCurrent ? "green-500" : "gray-700"} flex items-center justify-center text-xs font-bold text-white}`}>→</div> )} </div> ); })} <div className="absolute -top-2 left-1/2 -translate-x-1/2 text-xs font-medium text-green-400">CURRENT</div> </div> </section> ); }
+import React from "react"
+
+interface YearNode {
+  year: number
+  title: string
+  status: string
+  items: string[]
+  current?: boolean
+}
+
+const years: YearNode[] = [
+  {
+    year: 2026,
+    title: "Year 1 · Foundations",
+    status: "In Progress",
+    current: true,
+    items: ["C Programming", "Python", "Calculus", "Linear Algebra", "Statistics", "Data Visualization"],
+  },
+  {
+    year: 2027,
+    title: "Year 2 · Modeling",
+    status: "Upcoming",
+    items: ["Probability", "Machine Learning", "Statistical Learning", "Kaggle", "Data Mining"],
+  },
+  {
+    year: 2028,
+    title: "Year 3 · Research",
+    status: "Upcoming",
+    items: ["Deep Learning", "Research Projects", "Academic Writing", "Competition", "Research Internship"],
+  },
+  {
+    year: 2029,
+    title: "Year 4 · Graduate Study",
+    status: "Future",
+    items: [],
+  },
+]
+
+export const JourneyPage: React.FC = () => {
+  return (
+    <section className="bg-gray-900 py-12">
+      <div className="mx-auto max-w-[1600px] px-6">
+        <div className="mb-12 text-center">
+          <h2 className="mb-4 text-5xl font-bold tracking-tight lg:text-6xl">My Data Science Journey</h2>
+          <p className="text-lg text-gray-400">Learning in public. Building in progress.</p>
+        </div>
+
+        <ol className="relative mx-auto max-w-3xl border-l border-gray-700">
+          {years.map((node) => (
+            <li key={node.year} className="mb-10 ml-6 last:mb-0">
+              <span
+                className={`absolute -left-[9px] flex h-4 w-4 rounded-full border ${
+                  node.current ? "border-green-500 bg-green-500" : "border-gray-600 bg-gray-900"
+                }`}
+              />
+              <div
+                className={`rounded-2xl border p-6 ${
+                  node.current ? "border-green-500/60 bg-gray-800" : "border-gray-700 bg-gray-800/50"
+                }`}
+              >
+                <div className="mb-2 flex flex-wrap items-center gap-3">
+                  <h3 className="text-xl font-semibold">{node.title}</h3>
+                  <span
+                    className={`rounded px-2 py-0.5 text-xs font-medium ${
+                      node.current ? "bg-green-500/15 text-green-400" : "bg-gray-700 text-gray-400"
+                    }`}
+                  >
+                    {node.status}
+                  </span>
+                  <span className="text-sm text-gray-500">{node.year}</span>
+                </div>
+
+                {node.items.length > 0 ? (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {node.items.map((item) => (
+                      <span key={item} className="rounded bg-gray-700/60 px-2 py-1 text-xs text-gray-300">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="mt-2 text-sm text-gray-500">To be defined.</p>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )
+}

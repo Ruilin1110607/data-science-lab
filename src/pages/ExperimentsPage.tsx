@@ -1,1 +1,22 @@
-@react-component ExperimentsPage import React from "react"; import { experiments } from "../data/experiments"; import { ScatterPlot } from "../charts/ScatterPlot"; export const ExperimentsPage: React.FC = () => { return ( <section className="py-12 bg-gray-900"> <div className="max-w-[1600px] mx-auto px-6"> <div className="text-center mb-12"> <h2 className="text-5xl lg:text-6xl font-bold tracking-tight mb-4">Experiments</h2> <p className="text-gray-400 text-lg">Small questions. Data-driven answers.</p> </div> <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"> {experiments.map((exp) => ( <div key={exp.id} className="group rounded-2xl overflow-hidden border border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-transform cursor-pointer"> <div className="relative h-64 bg-gray-800 overflow-hidden"> <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-transparent" /> </div> <div className="p-6"> <h4 className="font-medium mb-2">{exp.title}</h4> <p className="text-sm text-gray-400 mb-4 line-clamp-2">{exp.status}</p> <div className="flex items-center gap-2 mb-4"> <span className="text-xs text-gray-500">{exp.method || "Correlation Analysis"}</span> {exp.correlation && ( <span className="text-green-400 font-medium">r = {exp.correlation.toFixed(2)}</span> ) } </div> <ScatterPlot data={exp} /> <button className="mt-4 w-full px-4 py-2 text-sm text-green-400 rounded hover:bg-green-500/10 transition-colors">View Details →</button> </div> </div> )) } </div> </section> ); }
+import React from "react"
+import { experiments } from "../data/experiments"
+import { ExperimentCard } from "../components/experiment-card/ExperimentCard"
+
+export const ExperimentsPage: React.FC = () => {
+  return (
+    <section className="bg-gray-900 py-12">
+      <div className="mx-auto max-w-[1600px] px-6">
+        <div className="mb-12 text-center">
+          <h2 className="mb-4 text-5xl font-bold tracking-tight lg:text-6xl">Experiments</h2>
+          <p className="text-lg text-gray-400">Small questions. Data-driven answers.</p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {experiments.map((exp) => (
+            <ExperimentCard key={exp.id} {...exp} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}

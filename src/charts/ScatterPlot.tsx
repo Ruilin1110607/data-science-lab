@@ -1,1 +1,108 @@
-@react-component ScatterPlot import React from "react"; interface ExperimentData { id: string; title: string; status: string; method?: string; correlation?: number } interface Props { data: ExperimentData } export const ScatterPlot: React.FC<Props> = ({ data }) => { const mockX = data.id === "exp-1" ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] : data.id === "exp-2" ? [5, 6, 7, 8, 9, 10, 11] : [2, 3, 4, 5, 6, 7, 8]; const mockY = data.id === "exp-1" ? [50, 55, 60, 65, 70, 75, 80, 85, 90, 95] : data.id === "exp-2" ? [45, 50, 60, 65, 70, 75, 80] : [60, 55, 50, 45, 40, 35, 30]; const n = mockX.length; let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0; for (let i = 0; i < n; i++) { sumX += mockX[i]; sumY += mockY[i]; sumXY += mockX[i] * mockY[i]; sumX2 += mockX[i] * mockX[i]; } const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX); const intercept = (sumY - slope * sumX) / n; const xMin = Math.min(...mockX) * 0.9; const xMax = Math.max(...mockX) * 1.1; const yMin = Math.min(...mockY) * 0.9; const yMax = Math.max(...mockY) * 1.1; return ( <div className="mt-6 p-4 rounded-xl bg-gray-800 border border-gray-700"> <h4 className="text-sm font-medium mb-3 flex items-center gap-2"> <svg className="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"> <path d="M3 3l9 9M3 21l9-9M3 12l9 9" /> </svg> Relationship Visualization </h4> <svg className="absolute inset-0 w-full h-full" width={600} height={400} viewBox="0 0 600 400"> <line x1={50} y1={350} x2={550} y2={350} stroke="#333" strokeWidth={1} /> <line x1={50} y1={50} x2={50} y2={350} stroke="#333" strokeWidth={1} /> <text x={280} y={380} textAnchor="middle" fontSize={12} fill="#64748b">Study Hours</text> <text x={10} y={200} textAnchor="middle" transform="rotate(-90 10,200)" fontSize={12} fill="#64748b">Final Score</text> {mockX.map((val, i) => ( <circle cx={50 + ((val - xMin) / (xMax - xMin)) * 500} cy={350 - ((mockY[i] - yMin) / (yMax - yMin)) * 300} r={5} fill="green-400" stroke="#333" strokeWidth={1} /> )) } <path d={ [`M${50} ${350 - ((intercept + slope * xMin) - yMin) / (yMax - yMin) * 300}`, `L${550} ${350 - ((intercept + slope * xMax) - yMin) / (yMax - yMin) * 300}`].join(" ")} stroke="green-400" strokeWidth={2} fill="none" /> <text x={570} y={330} fontSize={12} fill="#64748b" textAnchor="end">{slope.toFixed(2)}</text> </svg> <div className="mt-4 text-center"> <p className="text-sm text-gray-400">Positive correlation observed between study time and final score</p> <p className="text-xs mt-1 text-gray-500">Demo Dataset — Correlation does not imply causation</p> </div> </div> ); }
+import React from "react"
+
+interface ExperimentData {
+  id: string
+  title: string
+  status: string
+  method?: string
+  correlation?: number
+}
+
+interface Props {
+  data: ExperimentData
+}
+
+const DATASETS: Record<string, { x: number[]; y: number[] }> = {
+  "exp-1": { x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], y: [50, 55, 60, 65, 70, 75, 80, 85, 90, 95] },
+  "exp-2": { x: [5, 6, 7, 8, 9, 10, 11], y: [45, 50, 60, 65, 70, 75, 80] },
+  "exp-3": { x: [2, 3, 4, 5, 6, 7, 8], y: [60, 55, 50, 45, 40, 35, 30] },
+}
+
+const W = 600
+const H = 400
+const PAD = { left: 56, right: 24, top: 24, bottom: 48 }
+
+export const ScatterPlot: React.FC<Props> = ({ data }) => {
+  const dataset = DATASETS[data.id] ?? DATASETS["exp-3"]
+  const { x, y } = dataset
+  const n = x.length
+
+  const sumX = x.reduce((acc, v) => acc + v, 0)
+  const sumY = y.reduce((acc, v) => acc + v, 0)
+  const sumXY = x.reduce((acc, v, i) => acc + v * y[i], 0)
+  const sumX2 = x.reduce((acc, v) => acc + v * v, 0)
+
+  const denom = n * sumX2 - sumX * sumX
+  const slope = denom === 0 ? 0 : (n * sumXY - sumX * sumY) / denom
+  const intercept = (sumY - slope * sumX) / n
+
+  const xMin = Math.min(...x)
+  const xMax = Math.max(...x)
+  const yMin = Math.min(...y)
+  const yMax = Math.max(...y)
+  const spanX = xMax - xMin || 1
+  const spanY = yMax - yMin || 1
+
+  const plotW = W - PAD.left - PAD.right
+  const plotH = H - PAD.top - PAD.bottom
+  const baseY = H - PAD.bottom
+  const sx = (v: number) => PAD.left + ((v - xMin) / spanX) * plotW
+  const sy = (v: number) => PAD.top + plotH - ((v - yMin) / spanY) * plotH
+
+  return (
+    <div className="mt-2 rounded-xl border border-gray-700 bg-gray-900/60 p-4">
+      <h5 className="mb-2 text-xs font-medium uppercase tracking-wider text-gray-400">
+        Relationship Visualization
+      </h5>
+
+      <svg
+        className="h-auto w-full"
+        viewBox={`0 0 ${W} ${H}`}
+        role="img"
+        aria-label={`Scatter plot: ${data.title}`}
+      >
+        <line x1={PAD.left} y1={baseY} x2={W - PAD.right} y2={baseY} stroke="#2a2a3a" strokeWidth={1} />
+        <line x1={PAD.left} y1={PAD.top} x2={PAD.left} y2={baseY} stroke="#2a2a3a" strokeWidth={1} />
+
+        <text x={PAD.left + plotW / 2} y={H - 12} textAnchor="middle" fontSize={12} fill="#64748b">
+          Study Hours
+        </text>
+        <text
+          x={16}
+          y={PAD.top + plotH / 2}
+          textAnchor="middle"
+          transform={`rotate(-90 16 ${PAD.top + plotH / 2})`}
+          fontSize={12}
+          fill="#64748b"
+        >
+          Final Score
+        </text>
+
+        <line
+          x1={sx(xMin)}
+          y1={sy(intercept + slope * xMin)}
+          x2={sx(xMax)}
+          y2={sy(intercept + slope * xMax)}
+          stroke="#4ade80"
+          strokeWidth={2}
+          strokeDasharray="6 4"
+        />
+
+        {x.map((xi, i) => (
+          <circle
+            key={`${xi}-${i}`}
+            cx={sx(xi)}
+            cy={sy(y[i])}
+            r={5}
+            fill="#4ade80"
+            fillOpacity={0.85}
+            stroke="#0a0a0f"
+            strokeWidth={1}
+          />
+        ))}
+      </svg>
+
+      <p className="mt-2 text-xs text-gray-500">Demo dataset — correlation does not imply causation.</p>
+    </div>
+  )
+}

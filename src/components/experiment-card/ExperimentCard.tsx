@@ -1,1 +1,42 @@
-@react-component ExperimentCard import React from "react"; interface Props { id: string; title: string; status: string; method?: string; correlation?: number } export const ExperimentCard: React.FC<Props> = ({ id, title, status, method, correlation }) => { return ( <div className="group rounded-2xl overflow-hidden border border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-transform cursor-pointer"> <div className="relative h-64 bg-gray-800 overflow-hidden"> <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-transparent" /> </div> <div className="p-6"> <h4 className="font-medium mb-2">{title}</h4> <p className="text-sm text-gray-400 mb-4 line-clamp-2">{status}</p> <div className="flex items-center gap-2"> <span className="text-xs text-gray-500">{method || "Correlation Analysis"}</span> {correlation && ( <span className="text-green-400 font-medium">r = {correlation.toFixed(2)}</span> ) } </div> <button className="mt-4 w-full px-4 py-2 text-sm text-green-400 rounded hover:bg-green-500/10 transition-colors">View Details →</button> </div> ); }
+import React from "react"
+import { ScatterPlot } from "../../charts/ScatterPlot"
+
+interface Props {
+  id: string
+  title: string
+  status: string
+  method?: string
+  correlation?: number
+}
+
+export const ExperimentCard: React.FC<Props> = ({ id, title, status, method, correlation }) => {
+  const hasChart = correlation !== undefined
+
+  return (
+    <div className="group flex flex-col overflow-hidden rounded-2xl border border-gray-700 transition-transform hover:-translate-y-1 hover:shadow-xl">
+      <div className="relative h-48 overflow-hidden bg-gray-800">
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-transparent" />
+        <span className="absolute left-4 top-4 rounded-full bg-black/40 px-2.5 py-1 text-xs font-medium text-gray-300">
+          {status}
+        </span>
+      </div>
+
+      <div className="flex flex-1 flex-col p-6">
+        <h4 className="mb-3 font-medium">{title}</h4>
+
+        <div className="mb-4 flex items-center gap-2">
+          <span className="text-xs text-gray-500">{method || "Correlation Analysis"}</span>
+          {hasChart && (
+            <span className="text-sm font-medium text-green-400">r = {correlation!.toFixed(2)}</span>
+          )}
+        </div>
+
+        {hasChart && <ScatterPlot data={{ id, title, status, method, correlation }} />}
+
+        <button className="mt-auto w-full px-4 pt-4 text-sm text-green-400 transition-colors hover:text-green-300">
+          View Details →
+        </button>
+      </div>
+    </div>
+  )
+}
