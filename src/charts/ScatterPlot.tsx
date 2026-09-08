@@ -1,30 +1,17 @@
 import React from "react"
-
-interface ExperimentData {
-  id: string
-  title: string
-  status: string
-  method?: string
-  correlation?: number
-}
+import type { Series } from "../data/experiments"
 
 interface Props {
-  data: ExperimentData
-}
-
-const DATASETS: Record<string, { x: number[]; y: number[] }> = {
-  "exp-1": { x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], y: [50, 55, 60, 65, 70, 75, 80, 85, 90, 95] },
-  "exp-2": { x: [5, 6, 7, 8, 9, 10, 11], y: [45, 50, 60, 65, 70, 75, 80] },
-  "exp-3": { x: [2, 3, 4, 5, 6, 7, 8], y: [60, 55, 50, 45, 40, 35, 30] },
+  title: string
+  series: Series
 }
 
 const W = 600
 const H = 400
-const PAD = { left: 56, right: 24, top: 24, bottom: 48 }
+const PAD = { left: 64, right: 24, top: 24, bottom: 56 }
 
-export const ScatterPlot: React.FC<Props> = ({ data }) => {
-  const dataset = DATASETS[data.id] ?? DATASETS["exp-3"]
-  const { x, y } = dataset
+export const ScatterPlot: React.FC<Props> = ({ title, series }) => {
+  const { x, y, xLabel, yLabel } = series
   const n = x.length
 
   const sumX = x.reduce((acc, v) => acc + v, 0)
@@ -50,22 +37,22 @@ export const ScatterPlot: React.FC<Props> = ({ data }) => {
   const sy = (v: number) => PAD.top + plotH - ((v - yMin) / spanY) * plotH
 
   return (
-    <div className="mt-2 rounded-xl border border-gray-700 bg-gray-900/60 p-4">
-      <h5 className="mb-2 text-xs font-medium uppercase tracking-wider text-gray-400">
-        Relationship Visualization
+    <div className="rounded-xl border border-gray-700 bg-gray-900/60 p-4">
+      <h5 className="mb-3 text-xs font-medium uppercase tracking-wider text-gray-400">
+        {xLabel} vs {yLabel}
       </h5>
 
       <svg
         className="h-auto w-full"
         viewBox={`0 0 ${W} ${H}`}
         role="img"
-        aria-label={`Scatter plot: ${data.title}`}
+        aria-label={`Scatter plot: ${title}`}
       >
         <line x1={PAD.left} y1={baseY} x2={W - PAD.right} y2={baseY} stroke="#2a2a3a" strokeWidth={1} />
         <line x1={PAD.left} y1={PAD.top} x2={PAD.left} y2={baseY} stroke="#2a2a3a" strokeWidth={1} />
 
-        <text x={PAD.left + plotW / 2} y={H - 12} textAnchor="middle" fontSize={12} fill="#64748b">
-          Study Hours
+        <text x={PAD.left + plotW / 2} y={H - 14} textAnchor="middle" fontSize={12} fill="#64748b">
+          {xLabel}
         </text>
         <text
           x={16}
@@ -75,7 +62,7 @@ export const ScatterPlot: React.FC<Props> = ({ data }) => {
           fontSize={12}
           fill="#64748b"
         >
-          Final Score
+          {yLabel}
         </text>
 
         <line
@@ -101,8 +88,6 @@ export const ScatterPlot: React.FC<Props> = ({ data }) => {
           />
         ))}
       </svg>
-
-      <p className="mt-2 text-xs text-gray-500">Demo dataset — correlation does not imply causation.</p>
     </div>
   )
 }

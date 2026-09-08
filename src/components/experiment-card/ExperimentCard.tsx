@@ -1,16 +1,14 @@
 import React from "react"
+import { Link } from "react-router-dom"
 import { ScatterPlot } from "../../charts/ScatterPlot"
+import type { Experiment } from "../../data/experiments"
 
 interface Props {
-  id: string
-  title: string
-  status: string
-  method?: string
-  correlation?: number
+  experiment: Experiment
 }
 
-export const ExperimentCard: React.FC<Props> = ({ id, title, status, method, correlation }) => {
-  const hasChart = correlation !== undefined
+export const ExperimentCard: React.FC<Props> = ({ experiment }) => {
+  const { id, title, status, method, correlation, series } = experiment
 
   return (
     <div className="group flex flex-col overflow-hidden rounded-2xl border border-gray-700 transition-transform hover:-translate-y-1 hover:shadow-xl">
@@ -26,16 +24,19 @@ export const ExperimentCard: React.FC<Props> = ({ id, title, status, method, cor
 
         <div className="mb-4 flex items-center gap-2">
           <span className="text-xs text-gray-500">{method || "Correlation Analysis"}</span>
-          {hasChart && (
-            <span className="text-sm font-medium text-green-400">r = {correlation!.toFixed(2)}</span>
+          {correlation !== undefined && (
+            <span className="text-sm font-medium text-green-400">r = {correlation.toFixed(2)}</span>
           )}
         </div>
 
-        {hasChart && <ScatterPlot data={{ id, title, status, method, correlation }} />}
+        {series && <ScatterPlot title={title} series={series} />}
 
-        <button className="mt-auto w-full px-4 pt-4 text-sm text-green-400 transition-colors hover:text-green-300">
+        <Link
+          to={`/experiments/${id}`}
+          className="mt-auto block w-full px-4 pt-4 text-sm text-green-400 transition-colors hover:text-green-300"
+        >
           View Details →
-        </button>
+        </Link>
       </div>
     </div>
   )

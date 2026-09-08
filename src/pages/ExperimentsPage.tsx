@@ -12,8 +12,8 @@ export const ExperimentsPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {experiments.map((exp) => (
-            <ExperimentCard key={exp.id} {...exp} />
+          {experiments.map((experiment) => (
+            <ExperimentCard key={experiment.id} experiment={experiment} />
           ))}
         </div>
       </div>

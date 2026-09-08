@@ -1,13 +1,10 @@
 import React from "react"
+import { Link } from "react-router-dom"
 import { LabStatus } from "../components/lab-status/LabStatus"
 import { experiments } from "../data/experiments"
 import { projectCards } from "../data/projects"
 
-interface Props {
-  onNavigate: (page: string) => void
-}
-
-export const HomePage: React.FC<Props> = ({ onNavigate }) => {
+export const HomePage: React.FC = () => {
   const stats = [
     { label: "Experiments", value: experiments.length },
     { label: "Projects", value: projectCards.length },
@@ -34,18 +31,18 @@ export const HomePage: React.FC<Props> = ({ onNavigate }) => {
             </p>
 
             <div className="flex flex-wrap gap-3">
-              <button
-                onClick={() => onNavigate("experiments")}
+              <Link
+                to="/experiments"
                 className="rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-green-500"
               >
                 Browse experiments
-              </button>
-              <button
-                onClick={() => onNavigate("projects")}
+              </Link>
+              <Link
+                to="/projects"
                 className="rounded-lg border border-gray-700 px-5 py-2.5 text-sm font-medium transition-colors hover:border-green-500 hover:text-green-400"
               >
                 View projects
-              </button>
+              </Link>
             </div>
 
             <dl className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4">

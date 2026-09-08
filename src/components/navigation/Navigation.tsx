@@ -1,31 +1,30 @@
 import React, { useState } from "react"
-
-export interface NavigationProps {
-  activePage: string
-  onNavigate: (page: string) => void
-  experimentId?: string | null
-}
+import { Link, NavLink } from "react-router-dom"
 
 const NAV_ITEMS = [
-  { id: "home", label: "Home" },
-  { id: "projects", label: "Projects" },
-  { id: "experiments", label: "Experiments" },
-  { id: "journey", label: "Journey" },
-  { id: "about", label: "About" },
+  { to: "/", label: "Home" },
+  { to: "/projects", label: "Projects" },
+  { to: "/experiments", label: "Experiments" },
+  { to: "/journey", label: "Journey" },
+  { to: "/about", label: "About" },
 ]
 
-export const Navigation: React.FC<NavigationProps> = ({ activePage, onNavigate }) => {
+export const Navigation: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false)
+  const closeMenu = () => setMenuOpen(false)
 
-  const go = (page: string) => {
-    onNavigate(page)
-    setMenuOpen(false)
-  }
+  const desktopClass = ({ isActive }: { isActive: boolean }) =>
+    `px-4 py-2 transition-colors hover:text-green-400 ${isActive ? "text-green-400" : "text-gray-400"}`
+
+  const mobileClass = ({ isActive }: { isActive: boolean }) =>
+    `block w-full px-6 py-3 text-left transition-colors hover:bg-gray-800 ${
+      isActive ? "text-green-400" : "text-gray-300"
+    }`
 
   return (
     <nav className="fixed left-0 right-0 top-0 z-50 border-b border-gray-700 bg-black/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-4">
-        <button className="flex items-center gap-2" onClick={() => go("home")} aria-label="Data Science Lab home">
+        <Link to="/" className="flex items-center gap-2" onClick={closeMenu}>
           <span className="flex h-10 w-10 items-center justify-center rounded-md bg-green-600">
             <svg
               className="h-6 w-6 text-white"
@@ -40,20 +39,13 @@ export const Navigation: React.FC<NavigationProps> = ({ activePage, onNavigate }
             </svg>
           </span>
           <span className="text-xl font-bold tracking-wider text-white">Data Science Lab</span>
-        </button>
+        </Link>
 
         <div className="hidden items-center gap-2 md:flex">
           {NAV_ITEMS.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => go(item.id)}
-              aria-current={activePage === item.id ? "page" : undefined}
-              className={`px-4 py-2 transition-colors hover:text-green-400 ${
-                activePage === item.id ? "text-green-400" : "text-gray-400"
-              }`}
-            >
+            <NavLink key={item.to} to={item.to} end={item.to === "/"} className={desktopClass}>
               {item.label}
-            </button>
+            </NavLink>
           ))}
         </div>
 
@@ -89,15 +81,15 @@ export const Navigation: React.FC<NavigationProps> = ({ activePage, onNavigate }
       {menuOpen && (
         <div className="border-t border-gray-700 bg-black/95 md:hidden">
           {NAV_ITEMS.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => go(item.id)}
-              className={`block w-full px-6 py-3 text-left transition-colors hover:bg-gray-800 ${
-                activePage === item.id ? "text-green-400" : "text-gray-300"
-              }`}
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === "/"}
+              className={mobileClass}
+              onClick={closeMenu}
             >
               {item.label}
-            </button>
+            </NavLink>
           ))}
         </div>
       )}
