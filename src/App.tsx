@@ -7,6 +7,7 @@ import { ExperimentsPage } from "./pages/ExperimentsPage"
 import { ExperimentDetailPage } from "./pages/ExperimentDetailPage"
 import { JourneyPage } from "./pages/JourneyPage"
 import { AboutPage } from "./pages/AboutPage"
+import { ManagePage } from "./pages/ManagePage"
 import { NotFoundPage } from "./pages/NotFoundPage"
 
 const ScrollToTop: React.FC = () => {
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/experiments/:id" element={<ExperimentDetailPage />} />
           <Route path="/journey" element={<JourneyPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/manage" element={<ManagePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>

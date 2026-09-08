@@ -1,0 +1,83 @@
+{
+  "experiments": [
+    {
+      "id": "exp-1",
+      "title": "Does More Study Time Mean Better Grades?",
+      "status": "Completed",
+      "method": "Correlation Analysis",
+      "correlation": 0.67,
+      "question": "Do students who study more hours each week tend to score higher on their final exams?",
+      "summary": "A first look at the relationship between weekly study hours and final scores in a small illustrative sample.",
+      "dataset": {
+        "name": "Study habits & final scores",
+        "observations": 10,
+        "variables": ["study hours / week", "final score"]
+      },
+      "findings": [
+        "Study time and final score move together in this sample: the correlation is r = 0.67.",
+        "The relationship is positive but not perfect — several high-effort points still sit below the trend line.",
+        "With only 10 observations the estimate is imprecise, so it should not be read as a precise effect size."
+      ],
+      "series": {
+        "x": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        "y": [50, 55, 60, 65, 70, 75, 80, 85, 90, 95],
+        "xLabel": "Study hours / week",
+        "yLabel": "Final score"
+      },
+      "note": "Demo dataset. These numbers illustrate the workflow, not the result of a real study."
+    },
+    {
+      "id": "exp-2",
+      "title": "Sleep vs Academic Performance",
+      "status": "Exploring",
+      "method": "Correlation Analysis",
+      "question": "Does how much sleep a student gets relate to their academic performance?",
+      "summary": "Framing the question and deciding what to measure — sleep duration, sleep quality, or both.",
+      "dataset": {
+        "name": "Sleep & performance log",
+        "observations": 0,
+        "variables": ["sleep hours", "self-rated performance"]
+      },
+      "findings": [],
+      "note": "No data collected yet. This page will fill in as the experiment progresses."
+    },
+    {
+      "id": "exp-3",
+      "title": "Phone Usage vs Study Performance",
+      "status": "Exploring",
+      "method": "Correlation Analysis",
+      "question": "Is more daily phone usage associated with worse study outcomes?",
+      "summary": "Working out how to measure phone usage without relying on self-report alone.",
+      "dataset": {
+        "name": "Screen time & study log",
+        "observations": 0,
+        "variables": ["screen time", "study outcome"]
+      },
+      "findings": [],
+      "note": "No data collected yet. This page will fill in as the experiment progresses."
+    }
+  ],
+  "projects": [
+    {
+      "id": "studyos",
+      "title": "StudyOS",
+      "description": "A data-driven learning workspace designed for university students.",
+      "tags": ["React", "Product Design", "Data"],
+      "status": "Building"
+    },
+    {
+      "id": "student-performance-analytics",
+      "title": "Student Performance Analytics",
+      "description": "Exploring the relationship between learning behavior and academic performance.",
+      "tags": ["Python", "Statistics", "Machine Learning"],
+      "status": "Planned"
+    },
+    {
+      "id": "quant-lab",
+      "title": "Quant Lab",
+      "description": "An experimental platform for financial data analysis and quantitative valuation.",
+      "tags": ["Python", "Data Analysis", "Finance"],
+      "status": "Planned"
+    }
+  ]
+}

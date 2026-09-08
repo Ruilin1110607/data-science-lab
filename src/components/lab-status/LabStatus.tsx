@@ -1,15 +1,16 @@
 import React from "react"
-import { experiments } from "../../data/experiments"
-import { projectCards } from "../../data/projects"
+import { useContent } from "../../data/content"
 
 export const LabStatus: React.FC = () => {
+  const { experiments, projects } = useContent()
+
   const rows = [
     { label: "ACTIVE", active: true },
     { label: "Data Science Foundations" },
     { label: "2026" },
     { label: "Undergraduate · Year 1" },
     { label: `Experiments: ${String(experiments.length).padStart(2, "0")}` },
-    { label: `Projects: ${String(projectCards.length).padStart(2, "0")}` },
+    { label: `Projects: ${String(projects.length).padStart(2, "0")}` },
   ]
 
   return (

@@ -1,8 +1,10 @@
 import React from "react"
-import { experiments } from "../data/experiments"
 import { ExperimentCard } from "../components/experiment-card/ExperimentCard"
+import { useContent } from "../data/content"
 
 export const ExperimentsPage: React.FC = () => {
+  const { experiments } = useContent()
+
   return (
     <section className="bg-gray-900 py-12">
       <div className="mx-auto max-w-[1600px] px-6">
@@ -11,11 +13,15 @@ export const ExperimentsPage: React.FC = () => {
           <p className="text-lg text-gray-400">Small questions. Data-driven answers.</p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {experiments.map((experiment) => (
-            <ExperimentCard key={experiment.id} experiment={experiment} />
-          ))}
-        </div>
+        {experiments.length === 0 ? (
+          <p className="text-center text-gray-500">No experiments yet.</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {experiments.map((experiment) => (
+              <ExperimentCard key={experiment.id} experiment={experiment} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )

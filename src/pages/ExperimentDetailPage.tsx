@@ -1,10 +1,11 @@
 import React from "react"
 import { Link, useParams } from "react-router-dom"
-import { experiments } from "../data/experiments"
 import { ScatterPlot } from "../charts/ScatterPlot"
+import { useContent } from "../data/content"
 
 export const ExperimentDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>()
+  const { experiments } = useContent()
   const experiment = experiments.find((item) => item.id === id)
 
   if (!experiment) {
@@ -54,10 +55,12 @@ export const ExperimentDetailPage: React.FC = () => {
         </dl>
 
         <div className="space-y-8">
-          <div>
-            <h3 className="mb-2 text-sm font-medium uppercase tracking-wider text-gray-400">Overview</h3>
-            <p className="leading-relaxed text-gray-300">{experiment.summary}</p>
-          </div>
+          {experiment.summary && (
+            <div>
+              <h3 className="mb-2 text-sm font-medium uppercase tracking-wider text-gray-400">Overview</h3>
+              <p className="leading-relaxed text-gray-300">{experiment.summary}</p>
+            </div>
+          )}
 
           {experiment.series && (
             <div>
@@ -66,19 +69,21 @@ export const ExperimentDetailPage: React.FC = () => {
             </div>
           )}
 
-          <div>
-            <h3 className="mb-2 text-sm font-medium uppercase tracking-wider text-gray-400">Dataset</h3>
-            <div className="rounded-2xl border border-gray-700 bg-gray-800/50 p-5">
-              <p className="mb-2 text-sm text-gray-200">{experiment.dataset.name}</p>
-              <div className="flex flex-wrap gap-2">
-                {experiment.dataset.variables.map((variable) => (
-                  <span key={variable} className="rounded bg-gray-700/60 px-2 py-1 text-xs text-gray-300">
-                    {variable}
-                  </span>
-                ))}
+          {(experiment.dataset.name || experiment.dataset.variables.length > 0) && (
+            <div>
+              <h3 className="mb-2 text-sm font-medium uppercase tracking-wider text-gray-400">Dataset</h3>
+              <div className="rounded-2xl border border-gray-700 bg-gray-800/50 p-5">
+                {experiment.dataset.name && <p className="mb-2 text-sm text-gray-200">{experiment.dataset.name}</p>}
+                <div className="flex flex-wrap gap-2">
+                  {experiment.dataset.variables.map((variable) => (
+                    <span key={variable} className="rounded bg-gray-700/60 px-2 py-1 text-xs text-gray-300">
+                      {variable}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           <div>
             <h3 className="mb-2 text-sm font-medium uppercase tracking-wider text-gray-400">Findings</h3>
@@ -96,9 +101,11 @@ export const ExperimentDetailPage: React.FC = () => {
             )}
           </div>
 
-          <p className="rounded-2xl border border-gray-700 bg-gray-800/50 p-5 text-sm text-gray-400">
-            {experiment.note}
-          </p>
+          {experiment.note && (
+            <p className="rounded-2xl border border-gray-700 bg-gray-800/50 p-5 text-sm text-gray-400">
+              {experiment.note}
+            </p>
+          )}
         </div>
       </div>
     </section>

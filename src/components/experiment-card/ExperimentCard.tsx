@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { ScatterPlot } from "../../charts/ScatterPlot"
-import type { Experiment } from "../../data/experiments"
+import type { Experiment } from "../../data/types"
 
 interface Props {
   experiment: Experiment

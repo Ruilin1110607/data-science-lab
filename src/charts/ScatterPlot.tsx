@@ -1,5 +1,5 @@
 import React from "react"
-import type { Series } from "../data/experiments"
+import type { Series } from "../data/types"
 
 interface Props {
   title: string

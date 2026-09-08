@@ -1,29 +1,6 @@
-export interface Series {
-  x: number[]
-  y: number[]
-  xLabel: string
-  yLabel: string
-}
+import type { Content } from "./types"
 
-export interface Experiment {
-  id: string
-  title: string
-  status: string
-  method?: string
-  correlation?: number
-  question: string
-  summary: string
-  dataset: {
-    name: string
-    observations: number
-    variables: string[]
-  }
-  findings: string[]
-  series?: Series
-  note: string
-}
-
-export const experiments: Experiment[] = [
+export const defaultExperiments: Content["experiments"] = [
   {
     id: "exp-1",
     title: "Does More Study Time Mean Better Grades?",
@@ -80,5 +57,29 @@ export const experiments: Experiment[] = [
     },
     findings: [],
     note: "No data collected yet. This page will fill in as the experiment progresses.",
+  },
+]
+
+export const defaultProjects: Content["projects"] = [
+  {
+    id: "studyos",
+    title: "StudyOS",
+    description: "A data-driven learning workspace designed for university students.",
+    tags: ["React", "Product Design", "Data"],
+    status: "Building",
+  },
+  {
+    id: "student-performance-analytics",
+    title: "Student Performance Analytics",
+    description: "Exploring the relationship between learning behavior and academic performance.",
+    tags: ["Python", "Statistics", "Machine Learning"],
+    status: "Planned",
+  },
+  {
+    id: "quant-lab",
+    title: "Quant Lab",
+    description: "An experimental platform for financial data analysis and quantitative valuation.",
+    tags: ["Python", "Data Analysis", "Finance"],
+    status: "Planned",
   },
 ]

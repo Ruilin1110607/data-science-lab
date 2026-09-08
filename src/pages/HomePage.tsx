@@ -1,13 +1,14 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { LabStatus } from "../components/lab-status/LabStatus"
-import { experiments } from "../data/experiments"
-import { projectCards } from "../data/projects"
+import { useContent } from "../data/content"
 
 export const HomePage: React.FC = () => {
+  const { experiments, projects } = useContent()
+
   const stats = [
     { label: "Experiments", value: experiments.length },
-    { label: "Projects", value: projectCards.length },
+    { label: "Projects", value: projects.length },
     { label: "Started", value: 2026 },
     { label: "Status", value: "Active" },
   ]

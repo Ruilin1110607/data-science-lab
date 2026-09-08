@@ -1,14 +1,13 @@
 import React from "react"
+import type { Project } from "../../data/types"
 
 interface Props {
-  id: string
-  title: string
-  description: string
-  tags: string[]
-  status: string
+  project: Project
 }
 
-export const ProjectCard: React.FC<Props> = ({ title, description, tags, status }) => {
+export const ProjectCard: React.FC<Props> = ({ project }) => {
+  const { title, description, tags, status } = project
+
   return (
     <div className="group flex flex-col overflow-hidden rounded-2xl border border-gray-700 transition-transform hover:-translate-y-1 hover:shadow-xl">
       <div className="relative h-48 overflow-hidden bg-gray-800">
