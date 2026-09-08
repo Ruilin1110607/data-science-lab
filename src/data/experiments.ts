@@ -1,0 +1,1 @@
+export const experiments = [ { id: "exp-1", title: "Does More Study Time Mean Better Grades?", status: "Completed", method: "Correlation Analysis", correlation: 0.67 }, { id: "exp-2", title: "Sleep vs Academic Performance", status: "Exploring" }, { id: "exp-3", title: "Phone Usage vs Study Performance", status: "Exploring" }]
